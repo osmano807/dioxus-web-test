@@ -6,6 +6,11 @@
 
     # Dev tools
     treefmt-nix.url = "github:numtide/treefmt-nix";
+
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:
@@ -14,20 +19,41 @@
       imports = [
         inputs.treefmt-nix.flakeModule
       ];
-      perSystem = { config, self', pkgs, lib, system, ... }:
+      perSystem =
+        { config
+        , self'
+        , pkgs
+        , lib
+        , system
+        , ...
+        }:
         let
           cargoToml = builtins.fromTOML (builtins.readFile ./Cargo.toml);
           nonRustDeps = [
             pkgs.libiconv
           ];
+          fenixPkgs = inputs.fenix.packages.${system};
+          fenix-toolchain = fenixPkgs.default.toolchain;
+
           rust-toolchain = pkgs.symlinkJoin {
             name = "rust-toolchain";
-            paths = [ pkgs.rustc pkgs.cargo pkgs.cargo-watch pkgs.rust-analyzer pkgs.rustPlatform.rustcSrc ];
+            paths = with fenixPkgs.default; [
+              rustc
+              cargo
+              clippy
+              rustfmt
+              fenixPkgs.rust-analyzer
+              fenixPkgs.complete.rust-src
+            ];
+          };
+          rustPlatform = pkgs.makeRustPlatform {
+            cargo = fenix-toolchain;
+            rustc = fenix-toolchain;
           };
         in
         {
           # Rust package
-          packages.default = pkgs.rustPlatform.buildRustPackage {
+          packages.default = rustPlatform.buildRustPackage {
             inherit (cargoToml.package) name version;
             src = ./.;
             cargoLock.lockFile = ./Cargo.lock;
@@ -39,9 +65,6 @@
               config.treefmt.build.devShell
             ];
             shellHook = ''
-              # For rust-analyzer 'hover' tooltips to work.
-              export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
-
               echo
               echo "🍎🍎 Run 'just <recipe>' to get started"
               just
@@ -52,6 +75,8 @@
               rust-toolchain
             ];
             RUST_BACKTRACE = 1;
+            # For rust-analyzer 'hover' tooltips to work.
+            RUST_SRC_PATH = fenixPkgs.complete.rust-src;
           };
 
           # Add your auto-formatters here.
