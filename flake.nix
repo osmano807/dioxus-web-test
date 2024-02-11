@@ -1,8 +1,8 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    systems.url = "github:nix-systems/default";
+    nixpkgs.url = "nixpkgs";
+    flake-parts.url = "flake-parts";
+    systems.url = "systems";
 
     # Dev tools
     treefmt-nix.url = "github:numtide/treefmt-nix";
