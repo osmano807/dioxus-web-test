@@ -1,22 +1,17 @@
-use clap::Parser;
-
-#[derive(Parser, Debug)]
-#[clap(author = "Sridhar Ratnakumar", version, about)]
-/// Application configuration
-struct Args {
-    /// whether to be verbose
-    #[arg(short = 'v')]
-    verbose: bool,
-
-    /// an optional name to greet
-    #[arg()]
-    name: Option<String>,
-}
+#![allow(non_snake_case)]
+// import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
+use dioxus::prelude::*;
 
 fn main() {
-    let args = Args::parse();
-    if args.verbose {
-        println!("DEBUG {args:?}");
-    }
-    println!("Hello {}!", args.name.unwrap_or("world".to_string()));
+    // launch the web app
+    dioxus_web::launch(App);
+}
+
+// create a component that renders a div with the text "Hello, world!"
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            "Hello, world!"
+        }
+    })
 }
