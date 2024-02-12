@@ -126,6 +126,8 @@
             # Using locally build dioxus-cli files a strange bug with wasm-bindgen mismatch
             # like this https://github.com/rustwasm/wasm-bindgen/discussions/3515
             self'.packages.dioxus-cli
+            pkg-config
+            openssl
           ];
           RUST_BACKTRACE = 1;
           # For rust-analyzer 'hover' tooltips to work.

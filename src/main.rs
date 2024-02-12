@@ -1,14 +1,18 @@
-#![allow(non_snake_case)]
-// import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
+#![allow(non_snake_case, unused)]
 use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
 
 fn main() {
-    // launch the web app
-    dioxus_web::launch(App);
+    #[cfg(feature = "ssr")]
+    LaunchBuilder::new(app)
+        .addr(std::net::SocketAddr::from(([0, 0, 0, 0], 8080)))
+        .launch();
+
+    #[cfg(feature = "web")]
+    LaunchBuilder::new(app).launch();
 }
 
-// create a component that renders a div with the text "Hello, world!"
-fn App(cx: Scope) -> Element {
+fn app(cx: Scope) -> Element {
     cx.render(rsx! {
         div {
             "Hello, world!"
