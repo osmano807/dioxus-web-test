@@ -1,7 +1,7 @@
-A template Rust project with fully functional and no-frills Nix support, as well as builtin VSCode configuration to get IDE experience without any manual setup (just [install direnv](https://nixos.asia/en/direnv), open in VSCode and accept the suggestions).
+A template Dioxus Fullstack Rust project with fully functional and no-frills Nix support, as well as builtin VSCode configuration to get IDE experience without any manual setup (just [install direnv](https://nixos.asia/en/direnv), open in VSCode and accept the suggestions).
 
 >[!NOTE]  
-> If you are looking for the original template based on [this blog post](https://srid.ca/rust-nix)'s use of `crate2nix`, browse from [this tag](https://github.com/srid/rust-nix-template/tree/crate2nix). The evolution of this template can be gleaned from [releases](https://github.com/srid/rust-nix-template/releases).
+> If you are looking for the original template see [rust-nix-template](https://github.com/srid/rust-nix-template/releases).
 
 ## Adapting this template
 
@@ -27,10 +27,9 @@ nix build
 
 We also provide a [`justfile`](https://just.systems/) for Makefile'esque commands.
 
-## Discussion
-
-- [Zulip](https://nixos.zulipchat.com/#narrow/stream/413950-nix)
+For now, not fully tested builds using `nix build`, currently experimenting with `justfile`. Adapt as you need.
 
 ## See Also
-
+- [rust-nix-template](https://github.com/srid/rust-nix-template/releases)
+- [fenix Rust toolchains](https://github.com/nix-community/fenix)
 - [nixos.wiki: Packaging Rust projects with nix](https://nixos.wiki/wiki/Rust#Packaging_Rust_projects_with_nix)
